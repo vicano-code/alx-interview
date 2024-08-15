@@ -5,31 +5,36 @@ script that reads stdin line by line and computes metrics
 
 import signal
 import sys
+from collections import Counter
 
-status_code = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-               "404": 0, "405": 0, "500": 0}
+#status_codes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+#               "404": 0, "405": 0, "500": 0}
+status_codes = Counter()
 file_size = 0
 counter = 0
 
-def print_stats():
+
+def print_stats(file_size, status_codes):
     """prints the stats"""
     print(f"File size: {file_size}")
-    for key, val in status_code.items():
-        if val != 0:
-            print(f"{key}: {val}")
+    sorted_codes = sorted(status_codes.items(), key=lambda item: int(item[0]))
+    for status, count in sorted_codes:
+        if count > 0:
+            print(f"{status}: {count}")
 
 
 def signal_handler(sig, frame):
     """handle CtrlC keyboard interrupt"""
-    print_stats()
-    exit()
+    print_stats(file_size, status_codes)
+    exit(0)
+
 
 signal.signal(signal.SIGINT, signal_handler)
 
 # read line from stdin
 for line in sys.stdin:
     counter += 1
-    
+
     # strip spaces before and after line
     line = line.strip()
     # split line into words based on whitespace
@@ -40,12 +45,10 @@ for line in sys.stdin:
         try:
             # cummulate file size after each valid line
             file_size += int(line_list[-1])
-
             # increment status code count
-            status_code[line_list[-2]] += 1
-        except [ValueError, TypeError, IndexError]:
+            status_codes[line_list[-2]] += 1
+        except (ValueError, IndexError) as e:
             counter -= 1
-            pass
     # print stats after every 10 lines
     if counter % 10 == 0:
-        print_stats()
+        print_stats(file_size, status_codes)
