@@ -11,6 +11,21 @@ status_code = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
 file_size = 0
 counter = 0
 
+def print_stats():
+    """prints the stats"""
+    print(f"File size: {file_size}")
+    for key, val in status_code.items():
+        if val != 0:
+            print(f"{key}: {val}")
+
+
+def signal_handler(sig, frame):
+    """handle CtrlC keyboard interrupt"""
+    print_stats()
+    exit()
+
+signal.signal(signal.SIGINT, signal_handler)
+
 # read line from stdin
 for line in sys.stdin:
     counter += 1
@@ -28,12 +43,9 @@ for line in sys.stdin:
 
             # increment status code count
             status_code[line_list[-2]] += 1
-        except Exception:
+        except [ValueError, TypeError, IndexError]:
             counter -= 1
             pass
     # print stats after every 10 lines
     if counter % 10 == 0:
-        print(f"File size: {file_size}")
-        for key, val in status_code.items():
-            if val != 0:
-                print(f"{key}: {val}")
+        print_stats()
