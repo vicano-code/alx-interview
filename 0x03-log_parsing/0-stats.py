@@ -14,19 +14,22 @@ counter = 0
 # read line from stdin
 for line in sys.stdin:
     counter += 1
-
+    
+    # strip spaces before and after line
+    line = line.strip()
     # split line into words based on whitespace
     line_list = line.split()
 
     # check line_list to ensure it meets the required size or format
     if len(line_list) == 9:
-        # obtain file size from line_list and cummulate
         try:
+            # cummulate file size after each valid line
             file_size += int(line_list[-1])
 
-            # obtain status code count
+            # increment status code count
             status_code[line_list[-2]] += 1
         except Exception:
+            counter -= 1
             pass
     # print stats after every 10 lines
     if counter % 10 == 0:
