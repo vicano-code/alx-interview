@@ -12,16 +12,16 @@ Each integer represents 1 byte of data, therefore you only need to handle the
 from typing import List
 
 
-def validUTF8(data: List) -> bool:
+def validUTF8(data: List[int]) -> bool:
     """Return True if data is a valid UTF-8 encoding, else return False"""
-    num_bytes = 0
+    num_bytes: int = 0
 
     # loop through each integer in the data list
     for value in data:
         if num_bytes > 0:
             # check if first 2 bits are 10 which is a utf8 continuation byte
             if value >> 6 != 0b10:
-                return False 
+                return False
             else:
                 num_bytes -= 1
         else:
@@ -37,6 +37,6 @@ def validUTF8(data: List) -> bool:
             # check the first 5 bits is 11110: 2-byte character
             elif value >> 3 == 0b11110:
                 num_bytes = 3
-            else:
+            else: # first bits don't match any valid utf8 charcter
                 return False
     return num_bytes == 0
