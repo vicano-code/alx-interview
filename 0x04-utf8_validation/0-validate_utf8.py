@@ -14,8 +14,6 @@ from typing import List
 
 def validUTF8(data: List[int]) -> bool:
     """Return True if data is a valid UTF-8 encoding, else return False"""
-    if data == []:
-        return False
 
     num_bytes: int = 0
 
