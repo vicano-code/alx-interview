@@ -37,6 +37,6 @@ def validUTF8(data: List[int]) -> bool:
             # check the first 5 bits is 11110: 2-byte character
             elif value >> 3 == 0b11110:
                 num_bytes = 3
-            else: # first bits don't match any valid utf8 charcter
+            else:  # first bits don't match any valid utf8 charcter
                 return False
     return num_bytes == 0
