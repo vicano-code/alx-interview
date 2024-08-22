@@ -5,11 +5,9 @@ script that reads stdin line by line and computes metrics
 
 import signal
 import sys
-from collections import Counter
 
-#status_codes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
-#               "404": 0, "405": 0, "500": 0}
-status_codes = Counter()
+status_codes = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0,
+               "404": 0, "405": 0, "500": 0}
 file_size = 0
 counter = 0
 
@@ -17,8 +15,7 @@ counter = 0
 def print_stats(file_size, status_codes):
     """prints the stats"""
     print(f"File size: {file_size}")
-    sorted_codes = sorted(status_codes.items(), key=lambda item: int(item[0]))
-    for status, count in sorted_codes:
+    for status, count in status_codes.items():
         if count > 0:
             print(f"{status}: {count}")
 
@@ -26,7 +23,6 @@ def print_stats(file_size, status_codes):
 def signal_handler(sig, frame):
     """handle CtrlC keyboard interrupt"""
     print_stats(file_size, status_codes)
-    exit(0)
 
 
 signal.signal(signal.SIGINT, signal_handler)
