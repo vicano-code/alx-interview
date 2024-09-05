@@ -7,7 +7,7 @@ const util = require('util');
 
 const requestPromise = util.promisify(request);
 
-async function getCharacterNames() {
+async function getCharacterNames () {
   try {
     const response = await requestPromise(url);
     if (response.statusCode !== 200) {
