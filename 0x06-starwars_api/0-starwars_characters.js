@@ -9,15 +9,17 @@ request(url, function (err, response, body) {
     return;
   }
   if (response.statusCode === 200) {
-    const characters = JSON.parse(body).characters;
-    for (const i in characters) {
-      request(characters[i], function (err, response, body) {
+    const result = [];
+    result.push(body);
+    r = JSON.parse(result);
+    console.log(result);
+    for (const i in r.characters) {
+      request(r.characters[i], function (err, response, body) {
         if (err) {
-          console.log(err);
+	  console.log(err);
         }
         if (response.statusCode === 200) {
-          const character = JSON.parse(body).name;
-          console.log(character);
+	  console.log(JSON.parse(body).name);
         }
       });
     }
