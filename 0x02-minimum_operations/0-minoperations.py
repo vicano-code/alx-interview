@@ -19,6 +19,9 @@ Number of operations: 6
 def minOperations(n):
     """calculate fewer number of operations"""
     # Determine the prime factorization of n
+    if n <= 1:
+        return 0
+
     factors = []
 
     # Divide with 2s
