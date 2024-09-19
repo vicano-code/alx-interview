@@ -9,12 +9,13 @@ def makeChange(coins, total):
     """return minimum number of coins that sum to give total"""
     if total <= 0:
         return 0
+
     # Sort the coins
     sorted_coins = sorted(coins)
 
     ans = []
     i = len(coins) - 1
-    while i > 0:
+    while i >= 0:
         while (total >= sorted_coins[i]):
             total -= sorted_coins[i]
             ans.append(sorted_coins[i])
