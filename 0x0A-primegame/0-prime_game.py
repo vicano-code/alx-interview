@@ -21,6 +21,9 @@ def isWinner(x, nums):
     """
     Determine the winner of prime selection game
     """
+    # input validation
+    if x < 1 or len(nums) != x:
+        return None
     # Precompute primes up to the maximum possible n in nums
     max_n = max(nums) if nums else 0
     sieve = isprime_sieve(max_n)
