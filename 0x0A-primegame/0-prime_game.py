@@ -1,6 +1,11 @@
 #!/usr/bin/python3
+"""
+Determine winner in a a game of prime selection
+"""
+
 
 def isprime(n):
+    """check if a number is prime"""
     # check if n is less than 2
     if n <= 1:
         return False
@@ -12,6 +17,7 @@ def isprime(n):
 
 
 def isWinner(x, nums):
+    """Determine the winner in a game of prime selection"""
     # determine the winner in a game
     wins = {
         'Maria': 0,
