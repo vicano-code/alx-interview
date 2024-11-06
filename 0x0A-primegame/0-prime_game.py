@@ -4,61 +4,47 @@ Determine winner in a a game of prime selection
 """
 
 
-def isprime(n):
-    """check if a number is prime"""
-    # check if n is less than 2
-    if n <= 1:
-        return False
-    # check for divisors from 2 to sqrt of n
+def isprime_sieve(n):
+    # Use sieve of Eratosthenes to mark prime numbers up to n
+    sieve = [True] * (n + 1)
+    sieve[0] = sieve[1] = False  # 0 and 1 are not primes
     for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
+        if sieve[i]:
+            for j in range(i * i, n + 1, i):
+                sieve[j] = False
+    return sieve
 
 
 def isWinner(x, nums):
-    """Determine the winner in a game of prime selection"""
-    # input validation
-    if x < 1:
-        return None
-    # determine the winner in a game
-    wins = {
-        'Maria': 0,
-        'Ben': 0
-    }
+    # Precompute primes up to the maximum possible n in nums
+    max_n = max(nums) if nums else 0
+    sieve = isprime_sieve(max_n)
+
+    # Track wins for each player
+    wins = {'Maria': 0, 'Ben': 0}
+
+    # Determine the winner for each round
     for n in nums:
-        if n == 1:  # No prime so Maria does not pick
+        moves = 0
+        available_nums = list(range(1, n + 1))
+        for i in range(2, n + 1):
+            if sieve[i] and i in available_nums:
+                # If i is a prime, make a move and remove i and its multiples
+                moves += 1
+                available_nums = [x for x in available_nums if x % i != 0]
+
+        # Determine the winner based on the number of moves
+        if moves % 2 == 1:
+            # Maria wins (since she starts first)
+            wins['Maria'] += 1
+        else:
+            # Ben wins
             wins['Ben'] += 1
 
-        x = [i for i in range(1, n+1)]
-        # print(x)
-        # check if prime number in x
-        _isprime = False
-        for i in x:
-            if isprime(i):
-                _isprime = True
-                break
-
-        if _isprime:
-            turns = []
-            next_turn = 'Maria'
-            while any(isprime(i) for i in x):
-                for i in x:
-                    if isprime(i):
-                        turns.append(next_turn)
-                        next_turn = 'Ben' if next_turn == 'Maria' else 'Maria'
-
-                # Remove i and its multiples from x
-                x = [k for k in x if k % i != 0]
-                break
-
-            wins[turns[-1]] += 1
-
+    # Determine the overall winner
     if wins['Maria'] > wins['Ben']:
-        winner = 'Maria'
+        return 'Maria'
     elif wins['Maria'] < wins['Ben']:
-        winner = 'Ben'
+        return 'Ben'
     else:
-        winner = None
-
-    return winner
+        return None
