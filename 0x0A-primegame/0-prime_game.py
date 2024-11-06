@@ -5,7 +5,9 @@ Determine winner in a a game of prime selection
 
 
 def isprime_sieve(n):
-    # Use sieve of Eratosthenes to mark prime numbers up to n
+    """
+    Use sieve of Eratosthenes to mark prime numbers up to n
+    """
     sieve = [True] * (n + 1)
     sieve[0] = sieve[1] = False  # 0 and 1 are not primes
     for i in range(2, int(n ** 0.5) + 1):
@@ -16,6 +18,9 @@ def isprime_sieve(n):
 
 
 def isWinner(x, nums):
+    """
+    Determine the winner of prime selection game
+    """
     # Precompute primes up to the maximum possible n in nums
     max_n = max(nums) if nums else 0
     sieve = isprime_sieve(max_n)
