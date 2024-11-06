@@ -18,6 +18,9 @@ def isprime(n):
 
 def isWinner(x, nums):
     """Determine the winner in a game of prime selection"""
+    # input validation
+    if x < 1:
+        return None
     # determine the winner in a game
     wins = {
         'Maria': 0,
